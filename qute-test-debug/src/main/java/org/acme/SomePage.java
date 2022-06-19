@@ -1,0 +1,36 @@
+package org.acme;
+import io.quarkus.qute.Engine;
+import io.quarkus.qute.Template;
+import io.quarkus.qute.TemplateInstance;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Path("/some-page")
+public class SomePage {
+
+    private final Template page;
+
+    public SomePage(Template page) {
+        this.page = requireNonNull(page, "page is required");
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public TemplateInstance get(@QueryParam("name") String name) {
+        //Engine.builder().build();
+        List<Item> items = new ArrayList<>();
+        items.add(new Item());
+        return page.data("name", name)
+            .data("items", items);
+    }
+
+}
